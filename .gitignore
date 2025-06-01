@@ -17,6 +17,9 @@ activate_dev.sh
 # Debug output
 dev/debug/
 
+# Browser automation debug files
+data/debug_*.png
+
 # Ignore .claude directory except git.keep in claude-input
 .claude/input/*
 !.claude/input/README.md
