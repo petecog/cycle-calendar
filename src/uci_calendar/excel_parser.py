@@ -183,3 +183,49 @@ class UCIExcelParser:
         }
         
         return stats
+    
+    def parse_multiple_files(self, file_paths: List[str]) -> List[Dict]:
+        """
+        Parse multiple UCI Excel files and combine events
+        
+        Args:
+            file_paths: List of paths to UCI Excel files
+            
+        Returns:
+            Combined list of events from all files
+        """
+        
+        all_events = []
+        successful_files = []
+        
+        for file_path in file_paths:
+            logger.info(f"Processing file: {file_path}")
+            file_events = self.parse_excel_file(file_path)
+            
+            if file_events:
+                all_events.extend(file_events)
+                successful_files.append(Path(file_path).name)
+                logger.info(f"Added {len(file_events)} events from {Path(file_path).name}")
+            else:
+                logger.warning(f"No events found in {Path(file_path).name}")
+        
+        # Remove duplicates based on title, date, and location
+        unique_events = []
+        seen = set()
+        
+        for event in all_events:
+            # Create a unique key for deduplication
+            key = (event['title'], event['date'].date(), event['location'])
+            
+            if key not in seen:
+                seen.add(key)
+                unique_events.append(event)
+        
+        removed_duplicates = len(all_events) - len(unique_events)
+        if removed_duplicates > 0:
+            logger.info(f"Removed {removed_duplicates} duplicate events")
+        
+        logger.info(f"Successfully combined {len(unique_events)} unique events from {len(successful_files)} files: {', '.join(successful_files)}")
+        
+        self.events = unique_events
+        return unique_events

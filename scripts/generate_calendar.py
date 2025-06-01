@@ -18,62 +18,62 @@ def main():
     
     success_count = 0
     
-    # Load events from Excel file (required)
-    from datetime import datetime
-    current_year = str(datetime.now().year)
-    excel_file = Path(__file__).parent.parent / 'data' / f'{current_year}.xls'
+    # Load events from ALL available Excel files in data directory
+    data_dir = Path(__file__).parent.parent / 'data'
+    existing_files = list(data_dir.glob("*.xls")) + list(data_dir.glob("*.xlsx"))
     
-    if not excel_file.exists():
-        print("❌ ERROR: UCI Excel file not found!")
-        print(f"📄 Expected file: {excel_file}")
-        
-        # Check for any existing Excel files in data folder as fallback
-        data_dir = excel_file.parent
-        existing_files = list(data_dir.glob("*.xls")) + list(data_dir.glob("*.xlsx"))
-        
-        if existing_files:
-            print(f"\n📁 Found {len(existing_files)} existing Excel file(s) in data folder:")
-            for i, file in enumerate(existing_files, 1):
-                print(f"   {i}. {file.name}")
+    # Filter out git.keep and other non-data files
+    excel_files = [f for f in existing_files if f.name != 'git.keep' and not f.name.startswith('.')]
+    
+    if not excel_files:
+        print("❌ ERROR: No UCI Excel files found!")
+        print(f"📁 Searched directory: {data_dir}")
+        # Try to download files
+        try:
+            import subprocess
             
-            # Use the most recent file as fallback
-            latest_file = max(existing_files, key=lambda f: f.stat().st_mtime)
-            print(f"\n🔄 Using most recent file as fallback: {latest_file.name}")
-            excel_file = latest_file
-        else:
-            print("\n🔄 Attempting to download automatically...")
+            download_script = Path(__file__).parent / 'download_uci_excel.py'
+            result = subprocess.run(['python', str(download_script), 'all'], 
+                                  capture_output=True, text=True, timeout=60)
             
-            # Try to download the file
-            try:
-                import subprocess
-                
-                download_script = Path(__file__).parent / 'download_uci_excel.py'
-                result = subprocess.run(['python', str(download_script), 'all'], 
-                                      capture_output=True, text=True, timeout=60)
-                
-                if result.returncode == 0 and excel_file.exists():
-                    print("✅ Successfully downloaded UCI Excel file!")
-                else:
-                    print("❌ Automatic download failed")
-                    print("\n💡 Manual download instructions:")
-                    print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
-                    print("2. Click 'Download season' → 'xls'")
-                    print(f"3. Save as: {excel_file}")
-                    print("\n💡 Alternatively, add any UCI Excel file to data/ folder")
-                    return 3
-                    
-            except Exception as e:
-                print(f"❌ Download error: {e}")
+            # Check if any files were downloaded
+            excel_files = [f for f in data_dir.glob("*.xls") if f.name != 'git.keep']
+            excel_files.extend([f for f in data_dir.glob("*.xlsx") if f.name != 'git.keep'])
+            
+            if excel_files:
+                print("✅ Successfully downloaded UCI Excel files!")
+            else:
+                print("❌ Automatic download failed")
                 print("\n💡 Manual download instructions:")
                 print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
                 print("2. Click 'Download season' → 'xls'")
-                print(f"3. Save as: {excel_file}")
+                print("3. Save as: data/YYYY.xls (e.g., data/2025.xls)")
                 print("\n💡 Alternatively, add any UCI Excel file to data/ folder")
                 return 3
+                
+        except Exception as e:
+            print(f"❌ Download error: {e}")
+            print("\n💡 Manual download instructions:")
+            print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
+            print("2. Click 'Download season' → 'xls'")
+            print("3. Save as: data/YYYY.xls (e.g., data/2025.xls)")
+            print("\n💡 Alternatively, add any UCI Excel file to data/ folder")
+            return 3
     
-    print("📊 Loading events from UCI Excel file...")
+    # Sort files by name for consistent processing order
+    excel_files.sort(key=lambda f: f.name)
+    
+    print(f"\n📁 Found {len(excel_files)} UCI Excel file(s):")
+    for i, file in enumerate(excel_files, 1):
+        print(f"   {i}. {file.name}")
+    
+    print(f"\n🔄 Combining events from all {len(excel_files)} files for comprehensive calendar")
+    
+    print("📊 Loading events from UCI Excel file(s)...")
     parser = UCIExcelParser()
-    events = parser.parse_excel_file(str(excel_file))
+    
+    # Always use multiple file parsing for consistency
+    events = parser.parse_multiple_files([str(f) for f in excel_files])
     
     if not events:
         print("❌ ERROR: Failed to parse Excel file!")
