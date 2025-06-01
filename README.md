@@ -6,7 +6,7 @@ Automatically syncs UCI MTB calendar events to a Google Calendar-compatible form
 
 Subscribe to the calendar in your calendar app:
 ```
-https://yourusername.github.io/cycle-calendar/calendar.ics
+https://petecog.github.io/cycle-calendar/calendar.ics
 ```
 
 ## How it works
