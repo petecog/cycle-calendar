@@ -11,14 +11,56 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 import time
+import asyncio
 
-def download_uci_excel_for_year(year: str, output_dir: Path = None) -> bool:
+def _try_browser_download(year: str, output_dir: Path) -> bool:
+    """
+    Try to download using browser automation
+    
+    Args:
+        year: Year to download
+        output_dir: Output directory
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    
+    try:
+        # Import browser automation script
+        browser_script = Path(__file__).parent / 'browser_download_uci.py'
+        if not browser_script.exists():
+            print("❌ Browser automation script not found")
+            return False
+        
+        # Import the UCIBrowserDownloader class
+        import sys
+        sys.path.insert(0, str(browser_script.parent))
+        from browser_download_uci import UCIBrowserDownloader
+        
+        # Run browser download
+        async def run_download():
+            downloader = UCIBrowserDownloader(output_dir)
+            return await downloader.download_year(year, headless=True)
+        
+        # Execute the async function
+        return asyncio.run(run_download())
+        
+    except ImportError as e:
+        print(f"❌ Browser automation not available: {e}")
+        print("💡 Install with: pip install playwright && playwright install chromium")
+        return False
+    except Exception as e:
+        print(f"❌ Browser automation failed: {e}")
+        return False
+
+def download_uci_excel_for_year(year: str, output_dir: Path = None, try_browser: bool = True) -> bool:
     """
     Download UCI MTB Excel file for a specific year
     
     Args:
         year: Year to download (e.g. "2025")
         output_dir: Directory to save the file (defaults to data/)
+        try_browser: Whether to try browser automation first (defaults to True)
         
     Returns:
         True if successful, False otherwise
@@ -28,6 +70,19 @@ def download_uci_excel_for_year(year: str, output_dir: Path = None) -> bool:
         output_dir = Path(__file__).parent.parent / 'data'
     
     output_dir.mkdir(exist_ok=True)
+    
+    # Try browser automation first (if available and requested)
+    if try_browser:
+        try:
+            print("🤖 Attempting browser automation download...")
+            success = _try_browser_download(year, output_dir)
+            if success:
+                return True
+            else:
+                print("⚠️  Browser automation failed, falling back to direct API...")
+        except Exception as e:
+            print(f"⚠️  Browser automation error: {e}")
+            print("🔄 Falling back to direct API approach...")
     
     print("🔍 Using discovered UCI API endpoint...")
     

@@ -1,0 +1,17 @@
+Collecting playwright
+  Downloading playwright-1.52.0-py3-none-manylinux1_x86_64.whl.metadata (3.5 kB)
+Collecting pyee<14,>=13 (from playwright)
+  Downloading pyee-13.0.0-py3-none-any.whl.metadata (2.9 kB)
+Collecting greenlet<4.0.0,>=3.1.1 (from playwright)
+  Downloading greenlet-3.2.2-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (4.1 kB)
+Collecting typing-extensions (from pyee<14,>=13->playwright)
+  Downloading typing_extensions-4.13.2-py3-none-any.whl.metadata (3.0 kB)
+Downloading playwright-1.52.0-py3-none-manylinux1_x86_64.whl (45.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.1/45.1 MB 6.0 MB/s eta 0:00:00
+Downloading greenlet-3.2.2-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (606 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 606.8/606.8 kB 4.4 MB/s eta 0:00:00
+Downloading pyee-13.0.0-py3-none-any.whl (15 kB)
+Downloading typing_extensions-4.13.2-py3-none-any.whl (45 kB)
+Installing collected packages: typing-extensions, greenlet, pyee, playwright
+
+Successfully installed greenlet-3.2.2 playwright-1.52.0 pyee-13.0.0 typing-extensions-4.13.2
