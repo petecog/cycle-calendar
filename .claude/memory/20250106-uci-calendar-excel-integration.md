@@ -188,3 +188,125 @@ UCI Excel File → UCIExcelParser → CalendarGenerator → calendar.ics
 - ✅ **Comprehensive testing** verified in production environment
 
 **Commit Status**: Ready for final chunked commits of .claude structure and cleanup.
+
+## Session Continuation - June 1st, 2025
+
+### 15. Weekly Schedule and Multi-File Enhancement
+**User request**: Reduce calendar refresh frequency and ensure multi-file Excel ingestion
+- **Schedule change**: GitHub Actions from every 6 hours → weekly (Sundays 6 AM UTC)
+- **Reasoning**: UCI data doesn't update frequently, weekly is sufficient
+- **Multi-file enhancement**: System now automatically combines ALL Excel files in `/data` directory
+- **Implementation**: Enhanced `generate_calendar.py` to discover and parse all `.xls`/`.xlsx` files
+- **Added method**: `parse_multiple_files()` with duplicate detection in `UCIExcelParser`
+- **Current capability**: Processes 2025.xls (651 events) + 2026.xls (4 events) = 655 total events
+- **Future-proof**: Will automatically include 2027.xls, 2028.xls when added to `/data`
+
+**Files modified**:
+- `.github/workflows/update-calendar.yml` - Schedule change to weekly
+- `scripts/generate_calendar.py` - Multi-file discovery and parsing
+- `src/uci_calendar/excel_parser.py` - Added `parse_multiple_files()` method
+- `index.html` - Updated "every 6 hours" → "weekly"
+
+### 16. GitHub Actions Deployment Issues and Resolution
+**Problem**: GitHub Actions failing with git permission errors and invalid parameters
+
+**Issue 1**: Generated files in `.gitignore` causing git add failures
+- **Error**: "The following paths are ignored by one of your .gitignore files: calendar.ics, debug.html"
+- **Initial approach**: Tried `git add -f` to force add ignored files
+- **User feedback**: Don't want to commit `.ics` files - they should be build artifacts only
+
+**Issue 2**: Invalid deployment parameters and git permissions
+- **Error**: "Unexpected input(s) 'include_files'" - parameter doesn't exist
+- **Error**: "Permission to petecog/cycle-calendar.git denied to github-actions[bot]"
+- **Root cause**: Using outdated peaceiris/actions-gh-pages@v3 with insufficient permissions
+
+**Solution**: Complete deployment architecture overhaul
+- **Removed**: Commit step for generated files (calendar.ics, debug.html)
+- **Approach**: Generate files fresh from Excel data, deploy directly to GitHub Pages
+- **Architecture**: Clean separation - main branch has source code, gh-pages has build artifacts
+- **Modern deployment**: Switched to official GitHub Actions (configure-pages, upload-pages-artifact, deploy-pages)
+- **Permissions**: Added proper permissions (contents: read, pages: write, id-token: write)
+- **Environment**: Added github-pages environment for secure deployment
+
+**Enhanced logging added**:
+```bash
+# File generation verification
+ls -la calendar.ics debug.html index.html
+
+# Deployment directory contents
+mkdir -p deploy
+cp calendar.ics debug.html index.html deploy/
+ls -la deploy/
+```
+
+**Final workflow structure**:
+1. **Generate**: Fresh calendar from Excel files
+2. **Package**: Copy to clean deployment directory  
+3. **Deploy**: Use artifact upload → GitHub Pages deployment
+4. **Result**: No git commits, clean build artifacts, proper permissions
+
+### 17. Repository Architecture Finalization
+**Current status**: Production-ready system with comprehensive capabilities
+
+**Data flow**:
+```
+Excel files (data/*.xls) → Multi-file parser → Combined events → calendar.ics + debug.html → GitHub Pages
+```
+
+**Key capabilities**:
+- ✅ **Multi-season support**: Automatic discovery and combination of all Excel files
+- ✅ **Comprehensive calendar**: 655 events from 2025.xls + 2026.xls (with deduplication)
+- ✅ **Clean architecture**: Source code in main, build artifacts in gh-pages
+- ✅ **Weekly automation**: Scheduled updates every Sunday 6 AM UTC
+- ✅ **Modern deployment**: Official GitHub Actions with proper permissions
+- ✅ **Future-proof**: Will automatically include new years (2027.xls, 2028.xls) when added
+
+**Repository structure**:
+```
+main branch:
+├── data/
+│   ├── 2025.xls (651 events)
+│   ├── 2026.xls (4 events)
+│   └── [future files automatically included]
+├── src/uci_calendar/ (package with multi-file support)
+├── scripts/generate_calendar.py (enhanced multi-file logic)
+└── .github/workflows/ (modern GitHub Pages deployment)
+
+gh-pages branch (auto-generated):
+├── calendar.ics (175KB, 385 upcoming events)
+├── debug.html (197KB, full event listing)
+└── index.html (landing page)
+```
+
+**Authentication challenge preserved**:
+- UCI API endpoint: `https://api.uci.ch/v1.2/ucibws/competitions/getreportxls`
+- Requires Bearer token (Microsoft Azure AD, ~1 hour expiry)
+- Current workaround: Manual Excel download to `/data` directory
+- Future enhancement: Solve authentication for fully automated downloads
+
+## Final Status Summary
+
+**Production System**: Fully operational UCI MTB calendar with comprehensive multi-season support.
+
+**Technical Achievements**:
+- ✅ **655 events** processed from multiple Excel files (2025 + 2026)
+- ✅ **385 upcoming events** in generated calendar
+- ✅ **Weekly automation** with modern GitHub Pages deployment
+- ✅ **Clean architecture** separating source code from build artifacts
+- ✅ **Multi-file support** with automatic future file inclusion
+- ✅ **Robust fallback** system using all available data
+- ✅ **Comprehensive logging** for deployment debugging
+
+**Repository Quality**:
+- ✅ **Organized .claude structure** with proper knowledge management
+- ✅ **Clean git history** without build artifacts
+- ✅ **Modern CI/CD** using official GitHub Actions
+- ✅ **Future-proof design** for easy expansion (2027+ seasons)
+- ✅ **Comprehensive documentation** preserving implementation decisions
+
+**Authentication Next Steps**:
+- Focus area: Solve UCI API Bearer token acquisition
+- Current documentation: Complete API details preserved in `.claude/scratch/`
+- Working system: Manual Excel download ensures calendar stays current
+
+**Public URL**: https://petecog.github.io/cycle-calendar/calendar.ics
