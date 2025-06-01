@@ -102,14 +102,16 @@ jobs:
         echo "=============================================================="
         echo ""
         echo "📁 Generated files:"
-        ls -la calendar.ics debug.html index.html
+        ls -la calendar.ics debug.html
+        echo "📄 Static files:"
+        ls -la src/uci_calendar/templates/index.html
         
     - name: Create deployment directory
       run: |
         mkdir -p deploy
         cp calendar.ics deploy/
         cp debug.html deploy/
-        cp index.html deploy/
+        cp src/uci_calendar/templates/index.html deploy/
         echo "Files in deploy directory:"
         ls -la deploy/
         
