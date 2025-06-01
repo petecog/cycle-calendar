@@ -12,11 +12,12 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 import time
 
-def download_uci_excel(output_dir: Path = None) -> bool:
+def download_uci_excel_for_year(year: str, output_dir: Path = None) -> bool:
     """
-    Download UCI MTB Excel file using discovered API endpoint
+    Download UCI MTB Excel file for a specific year
     
     Args:
+        year: Year to download (e.g. "2025")
         output_dir: Directory to save the file (defaults to data/)
         
     Returns:
@@ -39,9 +40,9 @@ def download_uci_excel(output_dir: Path = None) -> bool:
         "Language": "En", 
         "Query": {
             "discipline": "MTB",
-            "year": "2025"
+            "year": year
         },
-        "ReportTitle": "MTB - 2025"
+        "ReportTitle": f"MTB - {year}"
     }
     
     headers = {
@@ -84,7 +85,7 @@ def download_uci_excel(output_dir: Path = None) -> bool:
                 'spreadsheet' in content_type or
                 'application/vnd.ms-excel' in content_type):
                 
-                filename = "UCICompetitions_MTB_2025.xls"
+                filename = f"{year}.xls"
                 output_file = output_dir / filename
                 
                 with open(output_file, 'wb') as f:
@@ -107,7 +108,7 @@ def download_uci_excel(output_dir: Path = None) -> bool:
     print("\n💡 Manual download instructions:")
     print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
     print("2. Click 'Download season' → 'xls'")
-    print(f"3. Save as: {output_dir}/UCICompetitions_MTB_2025.xls")
+    print(f"3. Save as: {output_dir}/{year}.xls")
     print("\n🔧 API Details for future automation:")
     print(f"   Endpoint: {api_url}")
     print(f"   Method: POST")
@@ -116,7 +117,123 @@ def download_uci_excel(output_dir: Path = None) -> bool:
     
     return False
 
+def discover_available_years() -> list:
+    """
+    Discover available years from UCI calendar
+    
+    Returns:
+        List of available years as strings
+    """
+    
+    # For now, we'll try common years around current time
+    # In the future, this could be enhanced to scrape the UCI website
+    # to dynamically discover available seasons
+    
+    from datetime import datetime
+    current_year = datetime.now().year
+    
+    # Try current year and next 2 years (UCI often has future seasons)
+    potential_years = [
+        str(current_year),
+        str(current_year + 1), 
+        str(current_year + 2)
+    ]
+    
+    print(f"🔍 Checking for available seasons: {', '.join(potential_years)}")
+    return potential_years
+
+def download_all_available_seasons(output_dir: Path = None) -> dict:
+    """
+    Download all available UCI MTB seasons
+    
+    Args:
+        output_dir: Directory to save files (defaults to data/)
+        
+    Returns:
+        Dictionary with year -> success status
+    """
+    
+    if output_dir is None:
+        output_dir = Path(__file__).parent.parent / 'data'
+    
+    output_dir.mkdir(exist_ok=True)
+    
+    print("🚀 Starting dynamic UCI MTB season download...")
+    
+    # Discover available years
+    years_to_try = discover_available_years()
+    
+    results = {}
+    successful_downloads = 0
+    
+    for year in years_to_try:
+        print(f"\n📅 Attempting to download {year} season...")
+        
+        try:
+            success = download_uci_excel_for_year(year, output_dir)
+            results[year] = success
+            
+            if success:
+                successful_downloads += 1
+                print(f"✅ Successfully downloaded {year}.xls")
+            else:
+                print(f"❌ Failed to download {year} season")
+                
+        except Exception as e:
+            print(f"❌ Error downloading {year}: {e}")
+            results[year] = False
+    
+    print(f"\n📊 Download Summary:")
+    print(f"   Attempted: {len(years_to_try)} seasons")
+    print(f"   Successful: {successful_downloads} downloads")
+    print(f"   Failed: {len(years_to_try) - successful_downloads}")
+    
+    if successful_downloads > 0:
+        print(f"\n💾 Downloaded files saved to: {output_dir}")
+        # List downloaded files
+        excel_files = list(output_dir.glob("*.xls")) + list(output_dir.glob("*.xlsx"))
+        for file in sorted(excel_files):
+            size_kb = file.stat().st_size // 1024
+            print(f"   📄 {file.name} ({size_kb} KB)")
+    
+    if successful_downloads == 0:
+        print(f"\n⚠️  No seasons downloaded successfully")
+        print(f"💡 Manual download instructions:")
+        print(f"1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
+        print(f"2. Click 'Download season' → 'xls'")
+        print(f"3. Save files as: {output_dir}/YYYY.xls (e.g. 2025.xls)")
+        
+    return results
+
 if __name__ == "__main__":
-    success = download_uci_excel()
-    if not success:
-        exit(1)
+    import sys
+    
+    # Check command line arguments
+    if len(sys.argv) > 1:
+        if sys.argv[1].lower() in ['all', 'auto', 'dynamic']:
+            # Download all available seasons
+            print("🔄 Dynamic mode: Downloading all available seasons...")
+            results = download_all_available_seasons()
+            
+            # Exit with error if no downloads succeeded
+            if not any(results.values()):
+                exit(1)
+        else:
+            # Download specific year
+            year = sys.argv[1]
+            print(f"📅 Single year mode: Downloading {year} season...")
+            success = download_uci_excel_for_year(year)
+            if not success:
+                exit(1)
+    else:
+        # Default: try dynamic download
+        print("🔄 No arguments provided - trying dynamic download...")
+        print("💡 Use 'python download_uci_excel.py YYYY' for specific year")
+        print("💡 Use 'python download_uci_excel.py all' for all seasons")
+        print()
+        
+        results = download_all_available_seasons()
+        
+        # Exit with error if no downloads succeeded
+        if not any(results.values()):
+            exit(1)
