@@ -32,20 +32,6 @@ jobs:
       run: |
         python scripts/generate_calendar.py
         
-    - name: Commit and push calendar
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add calendar.ics debug.html index.html
-        
-        # Only commit if there are changes
-        if ! git diff --staged --quiet; then
-          git commit -m "🗓️ Update UCI MTB calendar - $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
-        else
-          echo "No changes to calendar"
-        fi
-        
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
@@ -54,5 +40,8 @@ jobs:
         publish_dir: ./
         publish_branch: gh-pages
         keep_files: false
-        # Only publish web files
-        include_assets: 'calendar.ics,debug.html,index.html'
+        # Only publish generated web files
+        include_files: |
+          calendar.ics
+          debug.html
+          index.html
