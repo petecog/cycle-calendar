@@ -16,185 +16,29 @@ logger = logging.getLogger(__name__)
 class HTMLGenerator:
     def __init__(self):
         self.events = []  # Allow setting events directly
-        self.template = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCI MTB Calendar - Debug View</title>
-    <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-            background: #f8f9fa;
-        }
-        .header {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #0066cc;
-        }
-        .stat-label {
-            color: #666;
-            margin-top: 5px;
-        }
-        .events-grid {
-            display: grid;
-            gap: 20px;
-        }
-        .event-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        .event-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-        .event-header {
-            background: linear-gradient(135deg, #0066cc, #004499);
-            color: white;
-            padding: 20px;
-        }
-        .event-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin: 0;
-        }
-        .event-date {
-            font-size: 1.1em;
-            margin-top: 8px;
-            opacity: 0.9;
-        }
-        .event-body {
-            padding: 20px;
-        }
-        .event-location {
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .event-url {
-            margin-top: 15px;
-        }
-        .event-url a {
-            color: #0066cc;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .event-url a:hover {
-            text-decoration: underline;
-        }
-        .no-events {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 8px;
-            color: #666;
-        }
-        .last-updated {
-            text-align: center;
-            color: #666;
-            margin-top: 30px;
-            font-size: 0.9em;
-        }
-        .debug-info {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .debug-title {
-            font-weight: bold;
-            color: #856404;
-            margin-bottom: 10px;
-        }
-        .nav-links {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .nav-links a {
-            display: inline-block;
-            margin: 0 10px;
-            padding: 10px 20px;
-            background: #0066cc;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-        .nav-links a:hover {
-            background: #0052a3;
-        }
-    </style>
-</head>
+        self.template = self._load_template()
+    
+    def _load_template(self):
+        """Load HTML template from file"""
+        from pathlib import Path
+        
+        template_file = Path(__file__).parent / 'templates' / 'debug_calendar.html'
+        
+        try:
+            with open(template_file, 'r', encoding='utf-8') as f:
+                template = f.read()
+            logger.info(f"Loaded HTML template from {template_file}")
+            return template
+        except Exception as e:
+            logger.error(f"Failed to load template from {template_file}: {e}")
+            # Fallback to a minimal template
+            return """<!DOCTYPE html>
+<html>
+<head><title>UCI MTB Calendar</title></head>
 <body>
-    <div class="header">
-        <h1>🚵‍♂️ UCI MTB Calendar - Debug View</h1>
-        <p>Real-time view of scraped UCI Mountain Bike calendar events</p>
-    </div>
-    
-    <div class="nav-links">
-        <a href="index.html">← Back to Main</a>
-        <a href="calendar.ics" download>📥 Download iCal</a>
-    </div>
-    
-    <div class="debug-info">
-        <div class="debug-title">🔧 Debug Information</div>
-        <div><strong>Last Updated:</strong> {last_updated}</div>
-        <div><strong>Source:</strong> <a href="https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB" target="_blank">UCI MTB Calendar</a></div>
-        <div><strong>Calendar URL:</strong> <a href="calendar.ics">calendar.ics</a></div>
-    </div>
-    
-    <div class="stats">
-        <div class="stat-card">
-            <div class="stat-number">{total_events}</div>
-            <div class="stat-label">Total Events</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">{upcoming_events}</div>
-            <div class="stat-label">Upcoming Events</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">{next_event_days}</div>
-            <div class="stat-label">Days to Next Event</div>
-        </div>
-    </div>
-    
-    <div class="events-grid">
-        {events_html}
-    </div>
-    
-    <div class="last-updated">
-        Generated: {generation_time}
-    </div>
+<h1>Template Loading Error</h1>
+<p>Could not load template file: {template_error}</p>
+<div>{events_html}</div>
 </body>
 </html>"""
 
@@ -206,7 +50,8 @@ class HTMLGenerator:
         now = datetime.now()
         diff = (date_obj - now).days
         
-        date_str = date_obj.strftime("%B %d, %Y")
+        # Use unambiguous format: "10 Jan 2025" (day month year)
+        date_str = date_obj.strftime("%d %b %Y")
         
         if diff == 0:
             return f"{date_str} (Today)"
