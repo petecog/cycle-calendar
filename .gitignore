@@ -5,3 +5,11 @@ __pycache__/
 .venv/
 venv/
 *.log
+
+# Generated files
+calendar.ics
+debug.html
+test_calendar.ics
+
+# Development files
+activate_dev.sh
