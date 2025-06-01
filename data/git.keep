@@ -1,0 +1,2 @@
+# Keep /data directory for UCI Excel files
+# Files in this directory are downloaded from UCI website and ignored by git

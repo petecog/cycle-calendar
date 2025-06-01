@@ -11,6 +11,10 @@ calendar.ics
 debug.html
 test_calendar.ics
 
+# Downloaded data files - ignore content but keep directory
+data/*
+!data/git.keep
+
 # Development files
 activate_dev.sh
 
