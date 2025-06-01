@@ -30,18 +30,29 @@ https://petecog.github.io/cycle-calendar/calendar.ics
 
 ## 🛠️ Development
 
-### Quick Setup (VSCode)
+### Quick Setup (VSCode Dev Container)
 1. Install "Dev Containers" extension
 2. Open project in VSCode
 3. `F1` → "Dev Containers: Reopen in Container"
 4. All dependencies auto-installed!
 
-### Manual Setup
+### Local Setup (Python venv)
 ```bash
-pip install -r requirements-dev.txt
+# One-time setup
+./setup_dev_local.sh
+
+# Daily usage
+source venv/bin/activate
+python serve_local.py         # Start local server on :8000
 python test_local.py          # Test scraping
 python calendar_generator.py  # Generate calendar
-python html_calendar_generator.py  # Generate debug view
+```
+
+### Manual Setup
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements-dev.txt
 ```
 
 ### Available Tasks (VSCode)
