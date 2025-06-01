@@ -65,7 +65,11 @@ def main():
     
     print(f"\n📁 Found {len(excel_files)} UCI Excel file(s):")
     for i, file in enumerate(excel_files, 1):
-        print(f"   {i}. {file.name}")
+        file_size = file.stat().st_size
+        file_date = file.stat().st_mtime
+        from datetime import datetime
+        file_date_str = datetime.fromtimestamp(file_date).strftime("%Y-%m-%d %H:%M")
+        print(f"   {i}. {file.name} ({file_size:,} bytes, modified: {file_date_str})")
     
     print(f"\n🔄 Combining events from all {len(excel_files)} files for comprehensive calendar")
     
