@@ -82,9 +82,11 @@ class UCIExcelParser:
         """Parse a single event row from the Excel data"""
         
         try:
-            # Parse dates
-            date_from = pd.to_datetime(row['Date From'], errors='coerce')
-            date_to = pd.to_datetime(row['Date To'], errors='coerce')
+            # Parse dates - UCI Excel uses US format (MM/DD/YYYY)
+            # Force US format parsing to avoid ambiguity with dayfirst=False
+            # This ensures 01/06/2025 is parsed as January 6th, not June 1st
+            date_from = pd.to_datetime(row['Date From'], format='mixed', dayfirst=False, errors='coerce')
+            date_to = pd.to_datetime(row['Date To'], format='mixed', dayfirst=False, errors='coerce')
             
             if pd.isna(date_from):
                 return None  # Skip events without valid start date

@@ -4,7 +4,8 @@ UCI MTB Calendar Scraper Package
 A package for scraping UCI MTB calendar events and generating calendar files.
 """
 
-from .scraper import UCICalendarScraper
+# Scraper temporarily disabled - Excel parsing is primary data source
+# from .scraper import UCICalendarScraper
 from .calendar_generator import CalendarGenerator
 from .html_generator import HTMLGenerator
 from .excel_parser import UCIExcelParser
@@ -30,7 +31,7 @@ def generate_html(filename='debug.html'):
     return generator.generate_html_calendar(filename)
 
 __all__ = [
-    'UCICalendarScraper',
+    # 'UCICalendarScraper',  # Disabled - Excel parsing is primary
     'CalendarGenerator', 
     'HTMLGenerator',
     'UCIExcelParser',
