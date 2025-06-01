@@ -47,43 +47,38 @@ def download_uci_excel_for_year(year: str, output_dir: Path = None) -> bool:
     
     headers = {
         "accept": "application/json, text/plain, */*",
-        "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "en-GB,en;q=0.9",
         "content-type": "application/json;charset=UTF-8",
+        "dnt": "1",
+        "origin": "https://www.uci.org",
         "priority": "u=1, i",
+        "referer": "https://www.uci.org/",
         "sec-ch-ua": '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"Linux"',
         "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors", 
+        "sec-fetch-mode": "cors",
         "sec-fetch-site": "cross-site",
-        "referrer": "https://www.uci.org/",
-        "referrerPolicy": "strict-origin-when-cross-origin"
-        # Note: Authorization header needs to be obtained dynamically
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
     }
     
-    print("⚠️  WARNING: This API requires authentication")
-    print("   The discovered request included a Bearer token that expires")
-    print("   We need to either:")
-    print("   1. Reverse engineer the authentication flow, or")
-    print("   2. Use manual download for now")
-    print()
-    
     try:
-        print("🧪 Attempting API call without authentication...")
+        print("📡 Calling UCI API (no authentication required)...")
         response = requests.post(api_url, json=payload, headers=headers, timeout=15)
         
         print(f"   Response status: {response.status_code}")
+        print(f"   Response headers: {dict(response.headers)}")
+        print(f"   Response content preview: {response.text[:500]}")
         
-        if response.status_code == 401:
-            print("   ❌ Authentication required (401 Unauthorized)")
-            return False
-        elif response.status_code == 200:
+        if response.status_code == 200:
             # Check if we got Excel file
             content_type = response.headers.get('content-type', '').lower()
             
             if ('excel' in content_type or 
                 'spreadsheet' in content_type or
-                'application/vnd.ms-excel' in content_type):
+                'application/vnd.ms-excel' in content_type or
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' in content_type):
                 
                 filename = f"{year}.xls"
                 output_file = output_dir / filename
@@ -104,16 +99,15 @@ def download_uci_excel_for_year(year: str, output_dir: Path = None) -> bool:
     except Exception as e:
         print(f"   ❌ Request failed: {e}")
     
-    print("\n❌ API download failed - authentication required")
+    print("\n❌ API download failed")
     print("\n💡 Manual download instructions:")
     print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
     print("2. Click 'Download season' → 'xls'")
     print(f"3. Save as: {output_dir}/{year}.xls")
-    print("\n🔧 API Details for future automation:")
+    print("\n🔧 API Details:")
     print(f"   Endpoint: {api_url}")
     print(f"   Method: POST")
     print(f"   Payload: {payload}")
-    print("   Auth: Bearer token required (expires ~1 hour)")
     
     return False
 
