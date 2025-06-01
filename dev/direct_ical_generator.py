@@ -62,7 +62,23 @@ def create_ical_from_json():
             
             # Basic event info
             event.add('summary', event_data['title'])
-            event.add('description', f"Location: {event_data['location']}\\nCountry: {event_data['country']}\\nCategory: {event_data['category']}\\nClass: {event_data['class']}\\nSource: UCI Excel Download")
+            
+            # Build comprehensive description with all UCI fields
+            description_parts = []
+            description_parts.append(f"Venue: {event_data['venue']}")
+            description_parts.append(f"Country: {event_data['country']}")
+            description_parts.append(f"Calendar: {event_data['calendar']}")
+            description_parts.append(f"Class: {event_data['class']}")
+            
+            if event_data['email'] and event_data['email'] != 'nan':
+                description_parts.append(f"Email: {event_data['email']}")
+            
+            if event_data['url'] and event_data['url'] != 'nan':
+                description_parts.append(f"Website: {event_data['url']}")
+            
+            description_parts.append("\\nSource: UCI Excel Download")
+            
+            event.add('description', "\\n".join(description_parts))
             
             # Date handling
             start_date = datetime.strptime(event_data['date'], '%Y-%m-%d').date()

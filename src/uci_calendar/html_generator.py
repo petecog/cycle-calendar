@@ -8,13 +8,14 @@ from datetime import datetime
 import json
 import logging
 from typing import List, Dict
-from .scraper import UCICalendarScraper
+# Excel parser is the primary data source
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class HTMLGenerator:
     def __init__(self):
+        self.events = []  # Allow setting events directly
         self.template = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -258,9 +259,8 @@ class HTMLGenerator:
     def generate_html_calendar(self, filename: str = 'debug.html') -> bool:
         """Generate HTML calendar view"""
         try:
-            # Scrape events
-            scraper = UCICalendarScraper()
-            events = scraper.scrape_events()
+            # Use pre-set events (must be provided externally)
+            events = self.events
             
             # Calculate stats
             stats = self.calculate_stats(events)
