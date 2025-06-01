@@ -5,7 +5,7 @@
             "name": "Generate Calendar",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/calendar_generator.py",
+            "program": "${workspaceFolder}/scripts/generate_calendar.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },
@@ -13,7 +13,7 @@
             "name": "Test Scraper",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/scraper.py",
+            "program": "${workspaceFolder}/src/scraper.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },
@@ -21,7 +21,7 @@
             "name": "Generate HTML Debug",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/html_calendar_generator.py",
+            "program": "${workspaceFolder}/dev/debug_simple.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },
@@ -29,7 +29,7 @@
             "name": "Start Local Server",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/serve_local.py",
+            "program": "${workspaceFolder}/dev/serve_simple.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },
@@ -37,7 +37,7 @@
             "name": "Run Local Tests",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/test_local.py",
+            "program": "${workspaceFolder}/dev/test_local.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         }

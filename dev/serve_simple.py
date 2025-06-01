@@ -18,7 +18,8 @@ def start_simple_server(port=8000):
     if not os.path.exists('debug.html'):
         print("🔧 Generating debug.html...")
         try:
-            from html_calendar_generator import HTMLCalendarGenerator
+            sys.path.append(str(Path(__file__).parent.parent / 'src'))
+            from html_generator import HTMLCalendarGenerator
             generator = HTMLCalendarGenerator()
             generator.generate_html_calendar()
         except Exception as e:

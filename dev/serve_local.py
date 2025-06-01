@@ -36,6 +36,9 @@ class CalendarHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 def generate_files_if_missing():
     """Generate calendar files if they don't exist"""
     try:
+        # Add src to path
+        sys.path.append(str(Path(__file__).parent.parent / 'src'))
+        
         # Generate iCal file if missing
         if not os.path.exists('calendar.ics'):
             print("📅 Generating calendar.ics...")
@@ -46,7 +49,7 @@ def generate_files_if_missing():
         # Generate HTML debug view if missing
         if not os.path.exists('debug.html'):
             print("🔧 Generating debug.html...")
-            from html_calendar_generator import HTMLCalendarGenerator
+            from html_generator import HTMLCalendarGenerator
             html_generator = HTMLCalendarGenerator()
             html_generator.generate_html_calendar()
             

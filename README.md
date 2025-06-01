@@ -39,13 +39,13 @@ https://petecog.github.io/cycle-calendar/calendar.ics
 ### Local Setup (Python venv)
 ```bash
 # One-time setup
-./setup_dev_local.sh
+./scripts/setup_dev.sh
 
 # Daily usage
 source venv/bin/activate
-python serve_local.py         # Start local server on :8000
-python test_local.py          # Test scraping
-python calendar_generator.py  # Generate calendar
+python dev/serve_simple.py --port 3000  # Start local server
+python dev/test_local.py                # Test scraping  
+python scripts/generate_calendar.py     # Generate all files
 ```
 
 ### Manual Setup
@@ -62,17 +62,25 @@ pip install -r requirements-dev.txt
 ## 📁 Project Structure
 
 ```
-├── scraper.py                 # UCI calendar scraper
-├── calendar_generator.py      # iCal file generator  
-├── html_calendar_generator.py # HTML debug viewer
-├── .github/workflows/         # Auto-update workflow
-├── .devcontainer/            # VSCode dev environment
-└── docs/                     # GitHub Pages files
+├── src/                      # Core application code
+│   ├── scraper.py           # UCI calendar scraper
+│   ├── calendar_generator.py # iCal file generator
+│   └── html_generator.py    # HTML debug viewer
+├── scripts/                  # Executable utilities
+│   ├── generate_calendar.py # Main generation script
+│   └── setup_dev.sh        # Development setup
+├── dev/                     # Development tools
+│   ├── serve_simple.py     # Local development server
+│   ├── test_local.py       # Testing utilities
+│   └── debug_simple.py     # Simple debug generator
+├── docs/                    # Documentation & GitHub Pages
+├── .github/workflows/       # CI/CD automation
+└── .devcontainer/          # VSCode dev environment
 ```
 
 ## 🚀 Deployment
 
-See [SETUP.md](SETUP.md) for detailed deployment instructions.
+See [docs/SETUP.md](docs/SETUP.md) for detailed deployment instructions.
 
 ## 🔧 Troubleshooting
 
@@ -82,10 +90,11 @@ See [SETUP.md](SETUP.md) for detailed deployment instructions.
 
 ## 📝 Contributing
 
-1. Make changes in dev container
-2. Test with `python test_local.py`
+1. Make changes in dev container or local venv
+2. Test with `python dev/test_local.py`
 3. Format code with `black .`
-4. Submit pull request
+4. Generate files with `python scripts/generate_calendar.py`
+5. Submit pull request
 
 ---
 

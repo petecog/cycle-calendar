@@ -28,19 +28,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Generate calendar
+    - name: Generate calendar and debug files
       run: |
-        python calendar_generator.py
-        
-    - name: Generate HTML debug view
-      run: |
-        python html_calendar_generator.py
+        python scripts/generate_calendar.py
+        # Copy files to docs for GitHub Pages
+        cp calendar.ics debug.html docs/
         
     - name: Commit and push calendar
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add calendar.ics debug.html
+        git add calendar.ics debug.html docs/
         
         # Only commit if there are changes
         if ! git diff --staged --quiet; then
@@ -55,8 +53,6 @@ jobs:
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+        publish_dir: ./docs
         publish_branch: gh-pages
         keep_files: false
-        # Publish calendar files and pages
-        include_assets: 'calendar.ics,debug.html,index.html'

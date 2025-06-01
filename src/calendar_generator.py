@@ -10,7 +10,7 @@ import pytz
 import uuid
 import logging
 from typing import List, Dict
-from scraper import UCICalendarScraper
+from .scraper import UCICalendarScraper
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
