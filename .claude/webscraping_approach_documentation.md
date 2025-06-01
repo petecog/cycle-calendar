@@ -152,7 +152,7 @@ The scraper was designed to integrate with:
 
 If web scraping needs to be re-implemented:
 
-1. ✅ Use existing parsing logic from `dev/working_scraper.py`
+1. ✅ Use existing parsing logic from `.claude/working_scraper_reference.py`
 2. ✅ Implement JavaScript rendering (Selenium/Playwright)
 3. ✅ Test with live UCI calendar page
 4. ✅ Verify event counts match expected numbers
@@ -164,11 +164,11 @@ If web scraping needs to be re-implemented:
 
 **Core Files**:
 - `src/uci_calendar/scraper.py` - Main implementation (preserved)
-- `dev/working_scraper.py` - Working prototype
-- `dev/debug_scraper.py` - Debug tools
+- `.claude/working_scraper_reference.py` - Working prototype (moved from dev/)
+- `.claude/debug_scraper_reference.py` - Comprehensive debug tools (recovered from git)
 
 **Test Data**:
-- `Mountain Bike calendar _ UCI.html` - Reference HTML with full event data
+- `.claude/claude-input/Mountain Bike calendar _ UCI.html` - Reference HTML with full event data
 
 **Documentation**:
 - This file: `.claude/webscraping_approach_documentation.md`
