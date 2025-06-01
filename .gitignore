@@ -16,3 +16,6 @@ activate_dev.sh
 
 # Debug output
 dev/debug/
+
+.claude/
+# Claude messages
