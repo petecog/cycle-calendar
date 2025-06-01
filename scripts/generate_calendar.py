@@ -19,14 +19,38 @@ def main():
     success_count = 0
     
     # Load events from Excel file (required)
-    excel_file = Path(__file__).parent.parent / '.claude' / 'UCICompetitions_MTB_2025.xls'
+    excel_file = Path(__file__).parent.parent / 'data' / 'UCICompetitions_MTB_2025.xls'
     
     if not excel_file.exists():
         print("❌ ERROR: UCI Excel file not found!")
         print(f"📄 Expected file: {excel_file}")
-        print("💡 Please download UCICompetitions_MTB_2025.xls from UCI website")
-        print("   and place it in the .claude/ folder")
-        return 3
+        print("\n🔄 Attempting to download automatically...")
+        
+        # Try to download the file
+        try:
+            import subprocess
+            
+            download_script = Path(__file__).parent / 'download_uci_excel.py'
+            result = subprocess.run(['python', str(download_script)], 
+                                  capture_output=True, text=True, timeout=30)
+            
+            if result.returncode == 0 and excel_file.exists():
+                print("✅ Successfully downloaded UCI Excel file!")
+            else:
+                print("❌ Automatic download failed")
+                print("\n💡 Manual download instructions:")
+                print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
+                print("2. Click 'Download season' → 'xls'")
+                print(f"3. Save as: {excel_file}")
+                return 3
+                
+        except Exception as e:
+            print(f"❌ Download error: {e}")
+            print("\n💡 Manual download instructions:")
+            print("1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB")
+            print("2. Click 'Download season' → 'xls'")
+            print(f"3. Save as: {excel_file}")
+            return 3
     
     print("📊 Loading events from UCI Excel file...")
     parser = UCIExcelParser()
