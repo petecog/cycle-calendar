@@ -35,10 +35,73 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        
+    - name: Install Playwright browsers
+      run: |
+        playwright install chromium
+        
+    - name: Check existing data files
+      run: |
+        echo "📁 Existing data files:"
+        ls -la data/ || echo "No data directory found"
+        echo "📊 Data file summary:"
+        find data/ -name "*.xls" -o -name "*.xlsx" 2>/dev/null | wc -l | xargs echo "Excel files found:"
+        
+    - name: Attempt browser automation download
+      run: |
+        echo "🤖 Attempting browser automation download of UCI Excel files..."
+        echo "=================== BROWSER AUTOMATION LOG ==================="
+        python scripts/browser_download_uci.py all || echo "⚠️ Browser automation failed, will use existing files"
+        echo "=============================================================="
+        
+    - name: Verify data acquisition method
+      run: |
+        echo "📋 DATA ACQUISITION SUMMARY:"
+        echo "=============================="
+        
+        # Count files and show details
+        excel_count=$(find data/ -name "*.xls" -o -name "*.xlsx" 2>/dev/null | wc -l)
+        echo "📊 Total Excel files available: $excel_count"
+        
+        if [ $excel_count -gt 0 ]; then
+          echo "📄 Available files:"
+          for file in data/*.xls data/*.xlsx; do
+            if [ -f "$file" ] 2>/dev/null; then
+              filename=$(basename "$file")
+              filesize=$(stat -c%s "$file" 2>/dev/null || echo "unknown")
+              filedate=$(stat -c%y "$file" 2>/dev/null | cut -d' ' -f1 || echo "unknown")
+              echo "   ✅ $filename (${filesize} bytes, modified: $filedate)"
+            fi
+          done
+          
+          # Determine acquisition method based on file timestamps
+          echo ""
+          echo "🔍 DATA ACQUISITION METHOD:"
+          recent_files=$(find data/ -name "*.xls" -o -name "*.xlsx" -newermt "1 hour ago" 2>/dev/null | wc -l)
+          if [ $recent_files -gt 0 ]; then
+            echo "   🤖 BROWSER AUTOMATION - Fresh files downloaded automatically"
+            echo "   📡 Source: UCI website via Playwright browser automation"
+            echo "   ⏰ Downloaded: Within last hour"
+          else
+            echo "   📁 EXISTING FILES - Using previously available data"
+            echo "   📡 Source: Manual download or previous automation"
+            echo "   ⏰ Last updated: More than 1 hour ago"
+          fi
+        else
+          echo "   ❌ NO DATA FILES - Calendar generation will fail"
+        fi
+        
+        echo "=============================="
         
     - name: Generate calendar and debug files
       run: |
+        echo "🚀 Starting calendar generation from available data..."
+        echo "=================== CALENDAR GENERATION LOG =================="
         python scripts/generate_calendar.py
+        echo "=============================================================="
+        echo ""
+        echo "📁 Generated files:"
         ls -la calendar.ics debug.html index.html
         
     - name: Create deployment directory
