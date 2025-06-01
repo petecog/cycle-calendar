@@ -64,12 +64,12 @@ HTMLGenerator → debug.html (with template)
 - `src/uci_calendar/templates/debug_calendar.html` - Clean HTML template
 
 **Scripts**:
-- `scripts/generate_calendar.py` - Main entry point with auto-download attempts
-- `scripts/download_uci_excel.py` - UCI API download automation (auth required)
+- `scripts/generate_calendar.py` - Main entry point with dynamic year detection and fallback
+- `scripts/download_uci_excel.py` - Dynamic multi-season UCI download (auth required)
 - `scripts/setup_test_data.py` - Copy test data for development
 
 **Data & Output**:
-- `data/UCICompetitions_MTB_2025.xls` - UCI Excel file (ignored by git)
+- `data/2025.xls` - UCI Excel file (ignored by git, simplified naming)
 - `calendar.ics` - Generated iCal with 381 upcoming events
 - `debug.html` - HTML view with unambiguous date format
 
@@ -130,8 +130,13 @@ payload = {
 **Manual Download** (Current):
 1. Visit: https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB
 2. Click "Download season" → "xls"
-3. Save as `data/UCICompetitions_MTB_2025.xls`
+3. Save as `data/2025.xls` (or any .xls/.xlsx file in data/ folder)
 4. Run: `python scripts/generate_calendar.py`
+
+**Fallback Workflow**:
+- Script will auto-detect any .xls/.xlsx files in data/ folder
+- Uses most recent file if no exact year match found
+- Enables manual file addition to repository
 
 **Development Setup**:
 ```bash
@@ -139,6 +144,18 @@ source venv/bin/activate
 pip install -r requirements.txt
 python scripts/setup_test_data.py  # Copy test data
 python scripts/generate_calendar.py
+```
+
+**Download Script Usage**:
+```bash
+# Download all available seasons (2025, 2026, 2027)
+python scripts/download_uci_excel.py all
+
+# Download specific year
+python scripts/download_uci_excel.py 2025
+
+# Default behavior (tries all seasons)
+python scripts/download_uci_excel.py
 ```
 
 ## Future Enhancements
