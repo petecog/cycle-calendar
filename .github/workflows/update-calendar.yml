@@ -32,11 +32,15 @@ jobs:
       run: |
         python calendar_generator.py
         
+    - name: Generate HTML debug view
+      run: |
+        python html_calendar_generator.py
+        
     - name: Commit and push calendar
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add calendar.ics
+        git add calendar.ics debug.html
         
         # Only commit if there are changes
         if ! git diff --staged --quiet; then
@@ -54,5 +58,5 @@ jobs:
         publish_dir: ./
         publish_branch: gh-pages
         keep_files: false
-        # Only publish the calendar file and a simple index
-        include_assets: 'calendar.ics'
+        # Publish calendar files and pages
+        include_assets: 'calendar.ics,debug.html,index.html'
