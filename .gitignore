@@ -22,6 +22,7 @@ activate_dev.sh
 dev/debug/
 
 # Ignore .claude directory except git.keep in claude-input
-.claude/claude-input/*
-!.claude/claude-input/git.keep
+.claude/input/*
+!.claude/input/README.md
+
 !.claude/webscraping_approach_documentation.md
