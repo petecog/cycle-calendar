@@ -2,8 +2,8 @@ name: Update UCI MTB Calendar
 
 on:
   schedule:
-    # Run every 6 hours
-    - cron: '0 */6 * * *'
+    # Run weekly on Sundays at 6 AM UTC
+    - cron: '0 6 * * 0'
   # Allow manual trigger
   workflow_dispatch:
   # Run on push to main for testing
