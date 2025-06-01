@@ -30,6 +30,20 @@
             "problemMatcher": []
         },
         {
+            "label": "Start Local Server",
+            "type": "shell",
+            "command": "python",
+            "args": ["serve_local.py"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Test Local",
             "type": "shell",
             "command": "python",

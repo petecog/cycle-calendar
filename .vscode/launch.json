@@ -26,6 +26,14 @@
             "cwd": "${workspaceFolder}"
         },
         {
+            "name": "Start Local Server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/serve_local.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
             "name": "Run Local Tests",
             "type": "python",
             "request": "launch",
