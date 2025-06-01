@@ -10,6 +10,11 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   update-calendar:
     runs-on: ubuntu-latest
@@ -31,17 +36,23 @@ jobs:
     - name: Generate calendar and debug files
       run: |
         python scripts/generate_calendar.py
+        ls -la calendar.ics debug.html index.html
+        
+    - name: Create deployment directory
+      run: |
+        mkdir -p deploy
+        cp calendar.ics deploy/
+        cp debug.html deploy/
+        cp index.html deploy/
+        echo "Files in deploy directory:"
+        ls -la deploy/
         
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+        publish_dir: deploy
         publish_branch: gh-pages
         keep_files: false
-        # Only publish generated web files
-        include_files: |
-          calendar.ics
-          debug.html
-          index.html
+        force_orphan: true
