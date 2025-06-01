@@ -73,7 +73,8 @@ pip install -r requirements-dev.txt
 │   ├── serve_simple.py     # Local development server
 │   ├── test_local.py       # Testing utilities
 │   └── debug_simple.py     # Simple debug generator
-├── docs/                    # Documentation & GitHub Pages
+├── docs/                    # Documentation
+├── index.html              # GitHub Pages main page
 ├── .github/workflows/       # CI/CD automation
 └── .devcontainer/          # VSCode dev environment
 ```

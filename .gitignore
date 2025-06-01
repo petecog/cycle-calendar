@@ -10,8 +10,6 @@ venv/
 calendar.ics
 debug.html
 test_calendar.ics
-docs/calendar.ics
-docs/debug.html
 
 # Development files
 activate_dev.sh
