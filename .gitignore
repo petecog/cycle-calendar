@@ -13,3 +13,6 @@ test_calendar.ics
 
 # Development files
 activate_dev.sh
+
+# Debug output
+dev/debug/

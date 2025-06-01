@@ -21,10 +21,15 @@ def debug_fetch():
     url = "https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0"
     params = {'discipline': 'MTB'}
     
+    # Ensure debug directory exists
+    debug_dir = Path(__file__).parent / "debug"
+    debug_dir.mkdir(exist_ok=True)
+    
     print("🌐 Testing UCI Calendar Fetch")
     print("=" * 50)
     print(f"URL: {url}")
     print(f"Params: {params}")
+    print(f"📁 Debug folder: {debug_dir}")
     print()
     
     try:
@@ -43,9 +48,10 @@ def debug_fetch():
         
         if response.status_code == 200:
             # Save raw HTML for inspection
-            with open('debug_html_raw.html', 'w', encoding='utf-8') as f:
+            raw_file = debug_dir / 'uci_raw.html'
+            with open(raw_file, 'w', encoding='utf-8') as f:
                 f.write(response.text)
-            print(f"💾 Saved raw HTML to: debug_html_raw.html")
+            print(f"💾 Saved raw HTML to: {raw_file}")
             
             # Show first few lines
             lines = response.text.split('\n')[:20]
@@ -65,6 +71,8 @@ def debug_fetch():
 
 def debug_parsing(html_content):
     """Test parsing the HTML with detailed output"""
+    debug_dir = Path(__file__).parent / "debug"
+    
     print("🔍 Testing HTML Parsing")
     print("=" * 50)
     
@@ -120,9 +128,34 @@ def debug_parsing(html_content):
             print(f"   Script {i+1}: {content}...")
     
     # Save structured data for inspection
-    with open('debug_soup_structure.html', 'w', encoding='utf-8') as f:
+    structure_file = debug_dir / 'uci_parsed.html'
+    with open(structure_file, 'w', encoding='utf-8') as f:
         f.write(soup.prettify())
-    print(f"\n💾 Saved prettified HTML to: debug_soup_structure.html")
+    print(f"\n💾 Saved prettified HTML to: {structure_file}")
+    
+    # Save analysis summary
+    analysis_file = debug_dir / 'analysis.json'
+    analysis = {
+        'timestamp': datetime.now().isoformat(),
+        'page_title': title.get_text() if title else None,
+        'total_elements': {
+            'scripts': len(scripts),
+            'links': len(soup.find_all('a')),
+            'divs': len(soup.find_all('div')),
+            'spans': len(soup.find_all('span')),
+            'list_items': len(soup.find_all('li'))
+        },
+        'search_results': {}
+    }
+    
+    # Add search pattern results
+    for search in search_patterns:
+        elements = soup.find_all(string=search['pattern'])
+        analysis['search_results'][search['name']] = len(elements)
+    
+    with open(analysis_file, 'w') as f:
+        json.dump(analysis, f, indent=2)
+    print(f"📊 Saved analysis summary to: {analysis_file}")
 
 def test_scraper_logic():
     """Test the actual scraper logic"""
@@ -167,6 +200,8 @@ def test_scraper_logic():
 
 def main():
     """Run complete scraper debugging"""
+    debug_dir = Path(__file__).parent / "debug"
+    
     print("🚵‍♂️ UCI MTB Calendar Scraper Debug Tool")
     print("=" * 60)
     print()
@@ -183,14 +218,17 @@ def main():
     
     print("\n" + "=" * 60)
     print("🎯 Debug complete! Check generated files:")
-    print("   - debug_html_raw.html (raw UCI page)")
-    print("   - debug_soup_structure.html (parsed structure)")
+    print(f"   📁 Debug folder: {debug_dir}")
+    print(f"   - uci_raw.html (raw UCI page)")
+    print(f"   - uci_parsed.html (parsed structure)")
+    print(f"   - analysis.json (summary data)")
     print()
     print("💡 Next steps:")
-    print("   1. Open debug_html_raw.html in browser")
+    print("   1. Open uci_raw.html in browser")
     print("   2. Inspect the page structure")
     print("   3. Look for calendar events manually")
-    print("   4. Update scraper.py logic if needed")
+    print("   4. Check analysis.json for patterns")
+    print("   5. Update scraper.py logic if needed")
 
 if __name__ == "__main__":
     main()
