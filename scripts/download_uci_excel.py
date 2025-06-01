@@ -26,24 +26,13 @@ def _try_browser_download(year: str, output_dir: Path) -> bool:
     """
     
     try:
-        # Import browser automation script
-        browser_script = Path(__file__).parent / 'browser_download_uci.py'
-        if not browser_script.exists():
-            print("❌ Browser automation script not found")
-            return False
-        
-        # Import the UCIBrowserDownloader class
+        # Import from the uci_calendar package
         import sys
-        sys.path.insert(0, str(browser_script.parent))
-        from browser_download_uci import UCIBrowserDownloader
+        sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
+        from uci_calendar import download_uci_year
         
         # Run browser download
-        async def run_download():
-            downloader = UCIBrowserDownloader(output_dir)
-            return await downloader.download_year(year, headless=True)
-        
-        # Execute the async function
-        return asyncio.run(run_download())
+        return asyncio.run(download_uci_year(year, output_dir, headless=True))
         
     except ImportError as e:
         print(f"❌ Browser automation not available: {e}")
