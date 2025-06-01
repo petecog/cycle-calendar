@@ -19,7 +19,12 @@ sys.path.append(str(Path(__file__).parent.parent / 'src'))
 def debug_fetch():
     """Test fetching the UCI calendar page with detailed output"""
     url = "https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0"
-    params = {'discipline': 'MTB'}
+    params = {
+        'discipline': 'MTB',
+        'seasonId': '1002',
+        'raceCategory': 'ME,ME,WE,MM,WM,XE',
+        'raceType': 'END,DHI,XCR,XCE,XCC,XCM,XCO'
+    }
     
     # Ensure debug directory exists
     debug_dir = Path(__file__).parent / "debug"

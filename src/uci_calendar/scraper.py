@@ -24,9 +24,14 @@ class UCICalendarScraper:
         })
     
     def fetch_calendar_page(self) -> Optional[str]:
-        """Fetch the UCI MTB calendar page"""
+        """Fetch the UCI MTB calendar page with filters for relevant events"""
         try:
-            params = {'discipline': 'MTB'}
+            params = {
+                'discipline': 'MTB',
+                'seasonId': '1002',
+                'raceCategory': 'ME,ME,WE,MM,WM,XE',
+                'raceType': 'END,DHI,XCR,XCE,XCC,XCM,XCO'
+            }
             response = self.session.get(self.base_url, params=params, timeout=30)
             response.raise_for_status()
             return response.text
