@@ -22,7 +22,7 @@ class HTMLCalendarGenerator:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCI MTB Calendar - Debug View</title>
     <style>
-        body {
+        body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             max-width: 1200px;
             margin: 20px auto;
@@ -279,14 +279,21 @@ class HTMLCalendarGenerator:
                 </div>'''
             
             # Fill template
-            html_content = self.template.format(
-                last_updated=datetime.now().strftime("%Y-%m-%d %H:%M UTC"),
-                total_events=stats['total_events'],
-                upcoming_events=stats['upcoming_events'],
-                next_event_days=stats['next_event_days'],
-                events_html=events_html,
-                generation_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
-            )
+            try:
+                html_content = self.template.format(
+                    last_updated=datetime.now().strftime("%Y-%m-%d %H:%M UTC"),
+                    total_events=stats['total_events'],
+                    upcoming_events=stats['upcoming_events'],
+                    next_event_days=stats['next_event_days'],
+                    events_html=events_html,
+                    generation_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+                )
+            except KeyError as e:
+                logger.error(f"Template formatting error - missing key: {e}")
+                return False
+            except ValueError as e:
+                logger.error(f"Template formatting error - value error: {e}")
+                return False
             
             # Write to file
             with open(filename, 'w', encoding='utf-8') as f:
