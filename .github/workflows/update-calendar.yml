@@ -1,0 +1,58 @@
+name: Update UCI MTB Calendar
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  # Allow manual trigger
+  workflow_dispatch:
+  # Run on push to main for testing
+  push:
+    branches: [ main ]
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Generate calendar
+      run: |
+        python calendar_generator.py
+        
+    - name: Commit and push calendar
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add calendar.ics
+        
+        # Only commit if there are changes
+        if ! git diff --staged --quiet; then
+          git commit -m "🗓️ Update UCI MTB calendar - $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
+        else
+          echo "No changes to calendar"
+        fi
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        publish_branch: gh-pages
+        keep_files: false
+        # Only publish the calendar file and a simple index
+        include_assets: 'calendar.ics'
