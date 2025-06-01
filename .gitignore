@@ -17,5 +17,7 @@ activate_dev.sh
 # Debug output
 dev/debug/
 
-.claude/
-# Claude messages
+# Ignore .claude directory except git.keep in claude-input
+.claude/claude-input/*
+!.claude/claude-input/git.keep
+!.claude/webscraping_approach_documentation.md
