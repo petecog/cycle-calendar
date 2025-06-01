@@ -345,4 +345,18 @@ The UCI MTB Calendar project now has a **fully automated, production-ready syste
 4. **Documentation Update**: Update README with new capabilities
 5. **Testing Expansion**: Add unit tests for browser automation components
 
+## Follow-up Issues Identified (June 2025)
+
+### 🎯 **Event Filtering Requirements**
+**Issue**: Some event types should be excluded from the calendar
+- **Hardcoded filtering**: Filter Excel data based on specific field values
+- **URL-driven filtering**: Allow filtering via query parameters (more complex)
+- **Use cases**: Exclude training camps, administrative meetings, etc.
+
+### 🔗 **WebCal Subscription Link Issue**  
+**Issue**: `webcal://` links not working properly for calendar subscription
+- **Current**: `webcal://petecog.github.io/cycle-calendar/calendar.ics`
+- **Problem**: Link doesn't trigger calendar app subscription
+- **Investigation needed**: Protocol handling, alternative subscription methods
+
 The authentication challenge that began this work has been **completely solved** with a robust, scalable, and maintainable solution.

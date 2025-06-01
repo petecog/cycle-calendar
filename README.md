@@ -93,49 +93,40 @@ pip install -r requirements-dev.txt
 
 See [docs/SETUP.md](docs/SETUP.md) for detailed deployment instructions.
 
-## 📋 TODOs - Automated UCI Excel Downloads
+## ✅ Status: Fully Automated System
 
-**Current Status**: Manual Excel download → Automatic processing  
-**Goal**: Fully automated pipeline without manual intervention
+**Current Status**: ✅ **COMPLETE** - 100% automated pipeline with browser automation  
+**Achievement**: Full UCI Excel download automation implemented via Playwright
 
-### Immediate Next Steps (Branch: `feature/uci-auth`)
+### 🤖 **Browser Automation - IMPLEMENTED**
+- ✅ **Playwright browser automation** with 100% success rate
+- ✅ **Multi-season downloads** (2025, 2026, 2027) in ~50 seconds
+- ✅ **Cookie consent handling** automated
+- ✅ **CI/CD integration** with weekly GitHub Actions schedule
+- ✅ **Intelligent fallback** to existing files if automation fails
 
-1. **🤖 Browser Automation Approach**
-   - Implement Selenium/Playwright to automate real browser
-   - Navigate to UCI calendar page 
-   - Locate and click "Download season" → "xls" buttons
-   - Process downloaded files automatically
-   - **Advantage**: Bypasses Cloudflare/bot protection by using real browser
+### 📊 **Current Capabilities**
+- ✅ **655 events** processed from 3 seasons automatically
+- ✅ **385 upcoming events** in public calendar
+- ✅ **Weekly updates** every Sunday 6 AM UTC
+- ✅ **Clean git history** (build artifacts deployed separately)
+- ✅ **Comprehensive logging** showing data acquisition method
 
-2. **🔄 Hybrid Fallback System**
-   - Try browser automation first
-   - Fall back to existing Excel files if automation fails
-   - Notify via GitHub Actions if manual download needed
-   - **Implementation**: Enhanced GitHub Actions workflow with intelligent fallback
+## 🎯 Outstanding Feature Requests
 
-3. **🎯 Virtual Browser Integration**
-   - Headless Chrome/Firefox automation
-   - Full JavaScript execution context
-   - Handle dynamic content loading
-   - **Research**: puppeteer, playwright, selenium-wire options
+### 1. **Event Filtering** ⏳
+**Priority**: Medium  
+**Description**: Exclude specific event types from calendar
+- **Hardcoded filtering**: Filter based on Excel field values (event type, location, etc.)
+- **URL-driven filtering**: Dynamic filtering via query parameters
+- **Use cases**: Hide training camps, administrative meetings, youth events
 
-### Advanced Future Options
-
-4. **🔍 Session Context Replication**
-   - Visit UCI calendar page first to establish browser context
-   - Extract any hidden tokens/cookies
-   - Replay exact browser session for API access
-
-5. **📡 Alternative UCI Data Sources**
-   - Investigate other UCI API endpoints
-   - Monitor for UCI website changes that might re-enable direct access
-   - Consider UCI RSS feeds or other public data sources
-
-**Investigation Completed**: 
-- ✅ HAR file analysis (no authentication required)
-- ✅ Direct API replication (blocked by protection layer)
-- ✅ Protection mechanisms identified (Cloudflare, geographic restrictions)
-- ✅ Fallback workflow confirmed reliable
+### 2. **WebCal Subscription Fix** 🔗  
+**Priority**: High  
+**Description**: `webcal://` links not working for calendar subscription
+- **Current issue**: `webcal://petecog.github.io/cycle-calendar/calendar.ics` doesn't trigger apps
+- **Investigation needed**: Protocol handling, alternative subscription methods
+- **Alternative**: Direct `.ics` download working correctly
 
 ## 🔧 Troubleshooting
 
