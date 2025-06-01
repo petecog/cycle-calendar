@@ -7,16 +7,16 @@ This is for testing until we have the download working
 import shutil
 from pathlib import Path
 
-def setup_test_data():
+def setup_test_data(year: str = "2025"):
     """Copy Excel file from claude-input to data directory for testing"""
     
     # Source file in claude-input (for our reference)
-    source_file = Path(__file__).parent.parent / '.claude' / 'claude-input' / 'UCICompetitions_MTB_2025.xls'
+    source_file = Path(__file__).parent.parent / '.claude' / 'claude-input' / f'UCICompetitions_MTB_{year}.xls'
     
     # Destination in data directory (for application use)
     data_dir = Path(__file__).parent.parent / 'data'
     data_dir.mkdir(exist_ok=True)
-    dest_file = data_dir / 'UCICompetitions_MTB_2025.xls'
+    dest_file = data_dir / f'{year}.xls'
     
     if source_file.exists():
         shutil.copy2(source_file, dest_file)
