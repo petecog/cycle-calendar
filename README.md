@@ -63,16 +63,20 @@ pip install -r requirements-dev.txt
 
 ```
 ├── src/                      # Core application code
-│   ├── scraper.py           # UCI calendar scraper
-│   ├── calendar_generator.py # iCal file generator
-│   └── html_generator.py    # HTML debug viewer
+│   └── uci_calendar/        # Main package
+│       ├── __init__.py      # Package interface
+│       ├── scraper.py       # UCI calendar scraper
+│       ├── calendar_generator.py # iCal file generator
+│       └── html_generator.py # HTML debug viewer
 ├── scripts/                  # Executable utilities
 │   ├── generate_calendar.py # Main generation script
 │   └── setup_dev.sh        # Development setup
 ├── dev/                     # Development tools
 │   ├── serve_simple.py     # Local development server
 │   ├── test_local.py       # Testing utilities
-│   └── debug_simple.py     # Simple debug generator
+│   ├── debug_scraper.py    # Detailed scraper debugging
+│   ├── debug_simple.py     # Simple debug generator
+│   └── test_package.py     # Package structure testing
 ├── docs/                    # Documentation
 ├── index.html              # GitHub Pages main page
 ├── .github/workflows/       # CI/CD automation

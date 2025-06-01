@@ -19,8 +19,8 @@ def start_simple_server(port=8000):
         print("🔧 Generating debug.html...")
         try:
             sys.path.append(str(Path(__file__).parent.parent / 'src'))
-            from html_generator import HTMLCalendarGenerator
-            generator = HTMLCalendarGenerator()
+            from uci_calendar import HTMLGenerator
+            generator = HTMLGenerator()
             generator.generate_html_calendar()
         except Exception as e:
             print(f"⚠️  Could not generate debug.html: {e}")

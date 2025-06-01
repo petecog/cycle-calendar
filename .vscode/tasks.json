@@ -44,6 +44,20 @@
             "problemMatcher": []
         },
         {
+            "label": "Debug Scraper",
+            "type": "shell",
+            "command": "python",
+            "args": ["dev/debug_scraper.py"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Test Local",
             "type": "shell",
             "command": "python",

@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / 'src'))
 
-from scraper import UCICalendarScraper
+from uci_calendar import UCICalendarScraper
 
 def generate_simple_debug():
     """Generate a simple debug HTML file"""

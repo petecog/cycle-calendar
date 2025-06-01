@@ -42,15 +42,15 @@ def generate_files_if_missing():
         # Generate iCal file if missing
         if not os.path.exists('calendar.ics'):
             print("📅 Generating calendar.ics...")
-            from calendar_generator import CalendarGenerator
+            from uci_calendar import CalendarGenerator
             generator = CalendarGenerator()
             generator.generate_ical_file()
         
         # Generate HTML debug view if missing
         if not os.path.exists('debug.html'):
             print("🔧 Generating debug.html...")
-            from html_generator import HTMLCalendarGenerator
-            html_generator = HTMLCalendarGenerator()
+            from uci_calendar import HTMLGenerator
+            html_generator = HTMLGenerator()
             html_generator.generate_html_calendar()
             
     except ImportError as e:

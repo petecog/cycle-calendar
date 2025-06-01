@@ -13,7 +13,7 @@
             "name": "Test Scraper",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/scraper.py",
+            "program": "${workspaceFolder}/dev/debug_scraper.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },

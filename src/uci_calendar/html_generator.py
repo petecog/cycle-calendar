@@ -13,7 +13,7 @@ from .scraper import UCICalendarScraper
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class HTMLCalendarGenerator:
+class HTMLGenerator:
     def __init__(self):
         self.template = """<!DOCTYPE html>
 <html lang="en">
@@ -308,7 +308,7 @@ class HTMLCalendarGenerator:
 
 def main():
     """Main function to generate HTML calendar"""
-    generator = HTMLCalendarGenerator()
+    generator = HTMLGenerator()
     success = generator.generate_html_calendar()
     
     if success:

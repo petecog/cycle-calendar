@@ -5,14 +5,12 @@ This is the entry point used by GitHub Actions
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
-from calendar_generator import CalendarGenerator
-from html_generator import HTMLCalendarGenerator
+from uci_calendar import CalendarGenerator, HTMLGenerator
 
 def main():
     """Generate both iCal and HTML calendar files"""
@@ -31,7 +29,7 @@ def main():
     
     # Generate HTML debug view
     print("🔧 Generating HTML debug view...")
-    html_generator = HTMLCalendarGenerator()
+    html_generator = HTMLGenerator()
     if html_generator.generate_html_calendar('debug.html'):
         print("✅ HTML debug view generated successfully")
         success_count += 1
