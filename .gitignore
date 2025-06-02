@@ -15,8 +15,8 @@ test_calendar.ics
 index.html
 
 # Development files
-activate_dev.sh
-activate_deploy.sh
+# activate_dev.sh
+# activate_deploy.sh
 
 # Debug output
 dev/debug/

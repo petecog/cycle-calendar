@@ -1,0 +1,21 @@
+#!/bin/bash
+# Quick activation script for dev environment
+echo "🔧 Activating UCI MTB Calendar dev environment..."
+source venv-dev/bin/activate
+echo "✅ Virtual environment activated (venv-dev)!"
+echo ""
+echo "🧪 Available development commands:"
+echo "   python scripts/generate_calendar.py # Generate calendar files"
+echo "   python scripts/setup_test_data.py   # Set up test data"
+echo "   cd src/uci_calendar/templates && python -m http.server 8000 # Start local web server"
+echo ""
+echo "🎨 Code quality:"
+echo "   black .                           # Format code"
+echo "   flake8 .                          # Lint code"
+echo "   pytest                            # Run tests"
+echo ""
+echo "🧪 Pre-commit hooks:"
+echo "   pre-commit install                # Install git hooks"
+echo "   pre-commit run --all-files        # Run all hooks"
+echo ""
+echo "💡 To deactivate: deactivate"
