@@ -112,6 +112,8 @@ jobs:
         cp calendar.ics deploy/
         cp debug.html deploy/
         cp src/uci_calendar/templates/index.html deploy/
+        cp src/uci_calendar/templates/help.html deploy/
+        cp src/uci_calendar/templates/styles.css deploy/
         echo "Files in deploy directory:"
         ls -la deploy/
         
