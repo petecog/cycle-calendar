@@ -45,7 +45,12 @@
 <body>
     <h1>🚵‍♂️ UCI MTB Calendar Sync</h1>
     
-    <p>Subscribe to UCI Mountain Bike calendar events in your calendar app.</p>
+    <p><strong>Never miss a mountain bike race again!</strong> Get all UCI Mountain Bike World Cup races, championships, and events automatically delivered to your phone or computer calendar.</p>
+    
+    <h2>🤔 What is this?</h2>
+    <p>The UCI (Union Cycliste Internationale) is cycling's world governing body. They organize all the major mountain bike competitions - World Cups, World Championships, and continental events. Normally you'd have to manually check their website to see when races are happening.</p>
+    
+    <p>This service automatically watches the UCI calendar and converts it into a format your calendar app can understand. Once you subscribe, you'll get automatic updates whenever new races are announced or schedules change.</p>
     
     <h2>📅 Calendar Subscription</h2>
     <p>Copy this URL and add it as a calendar subscription in your calendar app:</p>
@@ -60,20 +65,51 @@
         <a href="debug.html" class="button">🔧 Debug View</a>
     </div>
     
-    <h2>📱 How to Subscribe</h2>
+    <h2>🏁 What events will I see?</h2>
+    <p>You'll get all official UCI Mountain Bike events including:</p>
     <ul>
-        <li><strong>Google Calendar:</strong> Settings → Add calendar → From URL</li>
-        <li><strong>Apple Calendar:</strong> File → New Calendar Subscription</li>
-        <li><strong>Outlook:</strong> Add calendar → Subscribe from web</li>
+        <li><strong>World Cup races</strong> - Downhill, Cross-Country, Short Track</li>
+        <li><strong>World Championships</strong> - Annual world titles across all disciplines</li>
+        <li><strong>Continental Championships</strong> - European, American, Asian, African, Oceanian titles</li>
+        <li><strong>Major stage races</strong> - Cape Epic, Leadville, and other UCI-sanctioned events</li>
+        <li><strong>Youth competitions</strong> - Junior and U23 championships</li>
+    </ul>
+    <p>Events show up with race location, dates, and links to official information.</p>
+
+    <h2>📱 How to Subscribe</h2>
+    <p>It's easy! Just add the calendar URL above to your favorite calendar app:</p>
+    <ul>
+        <li><strong>Google Calendar:</strong> On computer, go to Settings → Add calendar → From URL. Paste the link.</li>
+        <li><strong>Apple Calendar:</strong> On computer, go to File → New Calendar Subscription. Paste the link.</li>
+        <li><strong>Outlook:</strong> Click "Add calendar" → Subscribe from web. Paste the link.</li>
+        <li><strong>Phone apps:</strong> Most apps have an "Add calendar" or "Subscribe" option in settings.</li>
     </ul>
     
     <div class="status">
-        <strong>🤖 Automatic Updates:</strong> This calendar syncs with UCI weekly
+        <strong>🤖 Automatic Updates:</strong> This calendar syncs with UCI weekly - you'll never have to manually update it!
     </div>
+
+    <h2>🔧 Not seeing events?</h2>
+    <p>If your calendar seems empty:</p>
+    <ul>
+        <li><strong>Wait a few minutes</strong> - Some apps take time to load new subscriptions</li>
+        <li><strong>Check the <a href="debug.html">debug view</a></strong> to see if events are being found</li>
+        <li><strong>Try the webcal:// link</strong> above - some phones prefer this format</li>
+        <li><strong>Download the .ics file</strong> as a backup and import it manually</li>
+    </ul>
+    
+    <h2>🔄 How it works</h2>
+    <p>Every week, this system:</p>
+    <ol>
+        <li><strong>Downloads</strong> the latest race schedules from UCI's official website</li>
+        <li><strong>Converts</strong> them into calendar format that any app can read</li>
+        <li><strong>Updates</strong> the calendar file automatically</li>
+    </ol>
+    <p>It's completely automated, so you get new races and schedule changes without doing anything.</p>
     
     <h2>ℹ️ About</h2>
-    <p>This service automatically scrapes the <a href="https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB" target="_blank">UCI MTB calendar</a> and converts it to a standard iCal format that can be subscribed to in any calendar application.</p>
+    <p>This is an unofficial service that makes UCI's mountain bike calendar easier to use. All race information comes directly from the <a href="https://www.uci.org/calendar/mtb/1voMyukVGR4iZMhMlDfRv0?discipline=MTB" target="_blank">official UCI calendar</a>.</p>
     
-    <p><small>Generated with ❤️ using GitHub Actions</small></p>
+    <p><small>Built by mountain bike fans, for mountain bike fans 🚵‍♂️</small></p>
 </body>
 </html>
