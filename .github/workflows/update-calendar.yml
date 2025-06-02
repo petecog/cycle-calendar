@@ -49,10 +49,17 @@ jobs:
         find data/ -name "*.xls" -o -name "*.xlsx" 2>/dev/null | wc -l | xargs echo "Excel files found:"
         
     - name: Attempt browser automation download
+      id: download
       run: |
         echo "🤖 Attempting browser automation download of UCI Excel files..."
         echo "=================== BROWSER AUTOMATION LOG ==================="
-        python scripts/browser_download_uci.py all || echo "⚠️ Browser automation failed, will use existing files"
+        if python scripts/browser_download_uci.py all; then
+          echo "download_success=true" >> $GITHUB_OUTPUT
+          echo "✅ Browser automation successful"
+        else
+          echo "download_success=false" >> $GITHUB_OUTPUT
+          echo "⚠️ Browser automation failed, will use existing files"
+        fi
         echo "=============================================================="
         
     - name: Verify data acquisition method
