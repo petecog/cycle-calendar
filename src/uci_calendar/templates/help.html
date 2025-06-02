@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - UCI MTB Calendar Sync</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .calendar-link {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .button {
+            display: inline-block;
+            background: #0066cc;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 5px;
+        }
+        .button:hover {
+            background: #0052a3;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 6px;
+            background: #e8f5e8;
+            border-left: 4px solid #4caf50;
+        }
+        .nav {
+            margin-bottom: 30px;
+        }
+        .nav a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="index.html">← Back to Home</a>
+    </div>
+    
+    <h1>📚 Help & Instructions</h1>
+    
+    <h2>📱 How to Subscribe</h2>
+    <p>It's easy! Just add the calendar URL below to your favorite calendar app:</p>
+    
+    <div class="calendar-link">
+        https://petecog.github.io/cycle-calendar/calendar.ics
+    </div>
+    
+    <div>
+        <a href="calendar.ics" class="button">📥 Download Calendar</a>
+        <a href="webcal://petecog.github.io/cycle-calendar/calendar.ics" class="button">📲 Subscribe (webcal)</a>
+    </div>
+    
+    <h3>Platform-specific instructions:</h3>
+    <ul>
+        <li><strong>Google Calendar:</strong> On computer, go to Settings → Add calendar → From URL. Paste the link.</li>
+        <li><strong>Apple Calendar:</strong> On computer, go to File → New Calendar Subscription. Paste the link.</li>
+        <li><strong>Outlook:</strong> Click "Add calendar" → Subscribe from web. Paste the link.</li>
+        <li><strong>Phone apps:</strong> Most apps have an "Add calendar" or "Subscribe" option in settings.</li>
+    </ul>
+    
+    <div class="status">
+        <strong>🤖 Automatic Updates:</strong> This calendar syncs with UCI weekly - you'll never have to manually update it!
+    </div>
+
+    <h2>🔧 Not seeing events?</h2>
+    <p>If your calendar seems empty:</p>
+    <ul>
+        <li><strong>Wait a few minutes</strong> - Some apps take time to load new subscriptions</li>
+        <li><strong>Check the <a href="debug.html">debug view</a></strong> to see if events are being found</li>
+        <li><strong>Try the webcal:// link</strong> above - some phones prefer this format</li>
+        <li><strong>Download the .ics file</strong> as a backup and import it manually</li>
+    </ul>
+    
+    <h2>🔄 How it works</h2>
+    <p>Every week, this system:</p>
+    <ol>
+        <li><strong>Downloads</strong> the latest race schedules from UCI's official website</li>
+        <li><strong>Converts</strong> them into calendar format that any app can read</li>
+        <li><strong>Updates</strong> the calendar file automatically</li>
+    </ol>
+    <p>It's completely automated, so you get new races and schedule changes without doing anything.</p>
+    
+    <h2>❓ Still need help?</h2>
+    <p>If you're still having trouble, check out the <a href="https://github.com/petecog/cycle-calendar" target="_blank">project repository</a> for more information or to report issues.</p>
+</body>
+</html>
