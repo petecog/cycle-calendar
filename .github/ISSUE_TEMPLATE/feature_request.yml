@@ -1,0 +1,70 @@
+name: Feature Request
+description: Suggest an improvement or new feature for UCI MTB Calendar Sync
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Please describe your idea below.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: What feature would you like to see?
+      description: Describe the feature or improvement you'd like
+      placeholder: Tell us about your idea
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solving
+    attributes:
+      label: What problem would this solve?
+      description: What specific issue or limitation would this feature address?
+      placeholder: Describe the problem this feature would solve
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Describe your ideal solution
+      description: How would you like this feature to work?
+      placeholder: Describe how you envision this working
+    validations:
+      required: false
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: What type of feature is this?
+      options:
+        - Additional calendar/event sources
+        - Calendar filtering options
+        - Different output formats
+        - Website/UI improvements
+        - Mobile app features
+        - Integration with other services
+        - Performance improvements
+        - Other
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      options:
+        - label: I have considered other ways to solve this problem
+        - label: I have checked if this feature already exists
+        - label: I have looked for similar requests in existing issues
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other information that would help us understand your request
+      placeholder: Screenshots, examples, related links, etc.
+    validations:
+      required: false

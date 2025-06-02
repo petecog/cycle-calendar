@@ -1,0 +1,82 @@
+name: Bug Report
+description: Report a problem with the UCI MTB Calendar Sync
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please fill out the information below to help us understand and fix the problem.
+
+  - type: dropdown
+    id: problem-type
+    attributes:
+      label: What type of problem are you experiencing?
+      options:
+        - Calendar not updating/syncing
+        - Missing events or incorrect event information
+        - Calendar subscription not working
+        - Events showing wrong dates/times
+        - Website/page not loading
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the problem
+      description: What happened? What did you expect to happen?
+      placeholder: Tell us what you see and what you expected to see instead
+    validations:
+      required: true
+
+  - type: dropdown
+    id: calendar-app
+    attributes:
+      label: Which calendar app are you using?
+      options:
+        - Google Calendar (web)
+        - Google Calendar (mobile app)
+        - Apple Calendar (macOS)
+        - Apple Calendar (iOS)
+        - Outlook (web)
+        - Outlook (desktop)
+        - Outlook (mobile)
+        - Other (please specify in description)
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this problem?
+      placeholder: |
+        1. Go to...
+        2. Click on...
+        3. See error...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: troubleshooting
+    attributes:
+      label: Troubleshooting steps tried
+      description: What have you already tried to fix the problem?
+      options:
+        - label: Waited several minutes for calendar to sync
+        - label: Tried the webcal:// subscription link
+        - label: Downloaded and imported the .ics file manually
+        - label: Checked the debug view to see if events are being found
+        - label: Tried on a different device or calendar app
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: Any other details that might help us understand the problem
+      placeholder: Screenshots, error messages, device info, etc.
+    validations:
+      required: false

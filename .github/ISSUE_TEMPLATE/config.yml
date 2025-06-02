@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Quick Help
+    url: https://petecog.github.io/cycle-calendar/help.html
+    about: Check our help page for common issues and subscription instructions
+  - name: Debug View
+    url: https://petecog.github.io/cycle-calendar/debug.html
+    about: View current calendar events and check if the system is working properly
