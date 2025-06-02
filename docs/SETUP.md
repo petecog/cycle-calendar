@@ -30,12 +30,51 @@ Edit `index.html` and replace `yourusername` with your actual GitHub username:
 - Change `https://yourusername.github.io/cycle-calendar/calendar.ics`
 - To `https://YOURUSERNAME.github.io/cycle-calendar/calendar.ics`
 
-## 5. Test Locally (Optional)
+## 5. Set Up Local Development (Optional)
+
+### Environment Setup Options
 
 ```bash
-pip install -r requirements.txt
-python test_local.py
+# Set up both development and deployment environments
+./scripts/setup_dev.sh
+
+# OR set up specific environment:
+./scripts/setup_dev.sh --dev      # Development only (testing, linting, etc.)
+./scripts/setup_dev.sh --deploy   # Production only (minimal dependencies)
 ```
+
+### Development Workflow
+
+```bash
+# Activate development environment
+source activate_dev.sh
+
+# Test the setup
+python scripts/generate_calendar.py
+
+# Run development tools
+black .                    # Format code
+flake8 .                   # Lint code
+pytest                     # Run tests
+pre-commit run --all-files # Run pre-commit hooks
+
+# Start local web server
+cd src/uci_calendar/templates
+python -m http.server 8000
+# Then visit http://localhost:8000
+```
+
+### VS Code Setup
+
+The project includes VS Code configuration that automatically:
+- Uses `venv-dev/bin/python` as the default interpreter
+- Configures black for formatting and flake8 for linting
+- Sets up pytest for testing
+- Hides virtual environment directories from explorer
+
+**Environment Types:**
+- **Development** (`venv-dev/`): Full environment with testing, linting, browser automation
+- **Production** (`venv-deploy/`): Minimal environment with only runtime dependencies
 
 ## 6. Trigger First Run
 
@@ -61,5 +100,7 @@ https://YOURUSERNAME.github.io/cycle-calendar/calendar.ics
 ## Customization
 
 - Change update frequency: Edit `.github/workflows/update-calendar.yml` cron schedule
-- Modify scraping logic: Edit `scraper.py` 
-- Customize calendar metadata: Edit `calendar_generator.py`
+- Modify data processing: Edit `src/uci_calendar/excel_parser.py`
+- Customize calendar metadata: Edit `src/uci_calendar/calendar_generator.py`
+- Update web interface: Edit templates in `src/uci_calendar/templates/`
+- Add new data sources: Extend parser or create new download scripts

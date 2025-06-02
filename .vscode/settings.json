@@ -1,8 +1,11 @@
 {
+    "python.defaultInterpreterPath": "./venv-dev/bin/python",
     "python.terminal.activateEnvironment": true,
     "python.formatting.provider": "black",
+    "python.formatting.blackPath": "./venv-dev/bin/black",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
+    "python.linting.flake8Path": "./venv-dev/bin/flake8",
     "files.autoSave": "afterDelay",
     "editor.formatOnSave": true,
     "python.envFile": "${workspaceFolder}/.env",
@@ -10,8 +13,16 @@
         "PYTHONPATH": "${workspaceFolder}"
     },
     "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "./venv-dev/bin/pytest",
     "python.testing.unittestEnabled": false,
     "python.testing.pytestArgs": [
-        "."
-    ]
+        "tests"
+    ],
+    "files.exclude": {
+        "venv/": true,
+        "venv-dev/": true,
+        "venv-deploy/": true,
+        "**/__pycache__/": true,
+        "**/*.pyc": true
+    }
 }

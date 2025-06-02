@@ -63,24 +63,31 @@ Every week, this system automatically:
 3. `F1` → "Dev Containers: Reopen in Container"
 4. All dependencies auto-installed!
 
-#### Local Setup (Python venv)
+#### Local Setup (Dual Environment)
 ```bash
-# One-time setup
+# One-time setup (creates both dev and deploy environments)
 ./scripts/setup_dev.sh
 
-# Daily usage
-source venv/bin/activate
-python scripts/browser_download_uci.py   # Download via browser automation
-python scripts/generate_calendar.py     # Generate calendar from Excel files
-python -m http.server 8000              # Serve files locally for testing
+# OR set up specific environment:
+./scripts/setup_dev.sh --dev      # Development only (testing, linting, etc.)
+./scripts/setup_dev.sh --deploy   # Production only (minimal dependencies)
+
+# Daily development usage
+source activate_dev.sh               # Full dev environment
+python scripts/generate_calendar.py  # Generate calendar from Excel files
+black .                              # Format code
+flake8 .                             # Lint code
+pytest                               # Run tests
+
+# Start local web server
+cd src/uci_calendar/templates
+python -m http.server 8000           # Serve files locally for testing
 ```
 
-#### Manual Setup
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements-dev.txt
-```
+#### VS Code Integration
+- **Automatic setup**: Opens with `venv-dev/bin/python` as default interpreter
+- **Integrated tools**: Black formatting, flake8 linting, pytest testing
+- **Clean explorer**: Virtual environment directories hidden
 
 #### Available Tasks (VSCode)
 - `Ctrl+Shift+P` → "Tasks: Run Task"
@@ -156,7 +163,8 @@ See [docs/SETUP.md](docs/SETUP.md) for detailed deployment instructions.
 - **Wrong time zone?** All events are currently in UTC (this is a known limitation)
 
 **For developers:**
-- **Local testing fails?** Use `source venv/bin/activate` before running scripts  
+- **Local testing fails?** Use `source activate_dev.sh` (not the old venv/bin/activate)
+- **Environment issues?** Run `./scripts/setup_dev.sh --dev` to rebuild dev environment
 - **Missing seasons?** Add UCI Excel files to `data/` directory (auto-detected)
 - **Excel download blocked?** Use manual download - automation handles processing
 
@@ -171,6 +179,11 @@ Want to improve this? Here's how:
 5. **Submit pull request** with your improvements
 
 **Ideas for contributions:** Better error handling, timezone support, event filtering, support for other cycling disciplines.
+
+**Development environment notes:**
+- Use `activate_dev.sh` for development work (testing, linting, formatting)
+- Use `activate_deploy.sh` for production testing (minimal dependencies)
+- VS Code automatically configured for the development environment
 
 ---
 

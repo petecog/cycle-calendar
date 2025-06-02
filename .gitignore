@@ -4,6 +4,8 @@ __pycache__/
 .env
 .venv/
 venv/
+venv-dev/
+venv-deploy/
 *.log
 
 # Generated files
@@ -14,6 +16,7 @@ index.html
 
 # Development files
 activate_dev.sh
+activate_deploy.sh
 
 # Debug output
 dev/debug/
