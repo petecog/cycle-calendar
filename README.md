@@ -1,5 +1,7 @@
 # 🚵‍♂️ UCI MTB Calendar Sync
 
+[![Calendar Feed](https://img.shields.io/badge/📅_Calendar_Feed-Subscribe-blue?style=for-the-badge&link=https://petecog.github.io/cycle-calendar/calendar.ics)](https://petecog.github.io/cycle-calendar/calendar.ics)
+
 **Never miss a mountain bike race again!** This service automatically tracks all UCI Mountain Bike World Cup races, championships, and events, delivering them straight to your calendar app.
 
 ## 🎯 For Mountain Bike Fans
@@ -20,6 +22,11 @@
 **Just want the calendar?** Copy this link and add it to your calendar app:
 ```
 https://petecog.github.io/cycle-calendar/calendar.ics
+```
+
+**Using Google Calendar?** You can also add by calendar ID:
+```
+n5fp5b82serkhd45ffpf98v3lq5f7jhe@import.calendar.google.com
 ```
 
 **Need help subscribing?** Visit: [petecog.github.io/cycle-calendar](https://petecog.github.io/cycle-calendar/) for step-by-step instructions
