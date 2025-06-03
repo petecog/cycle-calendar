@@ -72,7 +72,8 @@ class CalendarGenerator:
                 end_date = event_data['end_date']
                 if isinstance(end_date, datetime):
                     if end_date.time() == end_date.time().min:
-                        event.add('dtend', end_date.date())
+                        # For all-day events, iCal DTEND should be one day after the last day (exclusive)
+                        event.add('dtend', (end_date + timedelta(days=1)).date())
                     else:
                         end_date = self.timezone.localize(end_date) if end_date.tzinfo is None else end_date
                         event.add('dtend', end_date)
