@@ -90,6 +90,10 @@ Automated service that downloads UCI MTB calendar data from Excel files and publ
 
 ### Daily Development
 ```bash
+# Quick testing script (recommended)
+./scripts/test_local.sh
+
+# Manual steps:
 # Activate development environment
 source activate_dev.sh
 
