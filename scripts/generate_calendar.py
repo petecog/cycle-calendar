@@ -108,9 +108,22 @@ def main():
     html_generator = HTMLGenerator()
     html_generator.events = events  # Set Excel events
     
-    if html_generator.generate_html_calendar('debug.html'):
+    # Generate in templates directory for local serving
+    templates_dir = Path(__file__).parent.parent / 'src' / 'uci_calendar' / 'templates'
+    debug_html_path = templates_dir / 'debug.html'
+    
+    if html_generator.generate_html_calendar(str(debug_html_path)):
         print("✅ HTML debug view generated successfully")
         success_count += 1
+        
+        # Copy calendar.ics to templates directory for local serving
+        try:
+            import shutil
+            calendar_ics_path = templates_dir / 'calendar.ics'
+            shutil.copy2('calendar.ics', str(calendar_ics_path))
+            print("📋 Calendar file copied to templates directory for local serving")
+        except Exception as e:
+            print(f"⚠️  Warning: Could not copy calendar.ics to templates: {e}")
     else:
         print("❌ Failed to generate HTML debug view")
         # Don't fail for HTML issues, iCal is the main output

@@ -109,7 +109,7 @@ jobs:
         echo "=============================================================="
         echo ""
         echo "📁 Generated files:"
-        ls -la calendar.ics debug.html
+        ls -la calendar.ics src/uci_calendar/templates/debug.html
         echo "📄 Static files:"
         ls -la src/uci_calendar/templates/index.html
         
@@ -117,7 +117,7 @@ jobs:
       run: |
         mkdir -p deploy
         cp calendar.ics deploy/
-        cp debug.html deploy/
+        cp src/uci_calendar/templates/debug.html deploy/
         cp src/uci_calendar/templates/index.html deploy/
         cp src/uci_calendar/templates/help.html deploy/
         cp src/uci_calendar/templates/styles.css deploy/
